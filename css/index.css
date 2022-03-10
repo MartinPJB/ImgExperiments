@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+/* Global html elements */
+::-webkit-scrollbar {width: 5px;}
+::-webkit-scrollbar-track {background-color: rgba(227, 227, 227, 0.2);}
+::-webkit-scrollbar-thumb {background: rgba(241, 241, 241, 0.2);}
+
+* {outline: none;}
+body {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+}
+span.marginB {
+    margin-bottom: 1pc;
+}
+button {
+    margin: 2vh 0;
+    padding: 1pc 2pc;
+    font-family: 'Rubik', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #26743d;
+    border: none;
+    color: white;
+    transition: transform .2s ease, opacity .2s ease;
+    cursor: pointer;
+}
+button:hover {transform: translateY(-3px);opacity: .7;}
+button.active {transform: translateY(-3px);opacity: .7;}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 5vh 0 6vh;
+    background-color: #26743d;
+    color: white;
+    text-transform: uppercase;
+}
+
+/* Sections & article */
+section {
+    display: flex;
+    flex-direction: column;
+    padding: 2vh 5vw;
+}
+section.bigOnes {border-bottom: 1px solid #dadada;}
+article {
+    margin-top: 3vh;
+    display: flex;
+}
+
+/* Canvas */
+canvas {
+    width: 255px;
+    height: 255px;
+    border: 1px solid #dadada;
+}
+
+/* Responsive */
+@media screen and (max-width: 640px){
+    body {background-color: #26743d;}
+    body * {
+        display: none;
+    }
+    body::before {
+        display: flex;
+        font-family: 'Rubik', sans-serif;
+        content: "This website has been made for computers.";
+        color: white;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+    }
+}

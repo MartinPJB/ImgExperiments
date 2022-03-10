@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images experiments</title>
+
+    <script src="./js/index.js" async type="module"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Images manipulation experiments 🧪</h1>
+            <span>On this page, I will just do some random stuff with images and see how it renders!</span>
+        </header>
+
+        <!-- Image mixer -->
+        <section class="bigOnes">
+            <h2>Image mixer</h2>
+            <span>Takes the first 4 bits of the rgb component in the first image, takes the last 4 bits of the rgb component in the second image, mixes the both and returns a glitchy image.</span>
+
+            <article>
+                <section> <canvas id="mixer"></canvas> </section>
+                <section>
+                    <span class="marginB">Please select two images</span>
+                    <input type="file" class="mixer" name="img1" accept=".png, .jpg">
+                    <input type="file" class="mixer" name="img2" accept=".png, .jpg">
+                    <button data-use="mixer">Demo</button>
+                </section>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
