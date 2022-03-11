@@ -16,18 +16,34 @@
             <span>On this page I will just do some random stuff with images and see how it renders.</span>
         </header>
 
-        <!-- Image mixer -->
+        <!-- Image tripper -->
         <section class="bigOnes">
-            <h2>Image glitcher</h2>
-            <span>Takes the first 4 bits of the rgb component in the first image, takes the last 4 bits of the rgb component in the second image, mixes the both and returns a glitchy image.</span>
+            <h2>Image Tripper</h2>
+            <span>Takes the first 4 bits of the rgb component in the image, generates randomly another rgb component and takes its last 4 bits. Generates a trippy image.</span>
 
             <article>
-                <section> <canvas id="mixer"></canvas> </section>
+                <section> <canvas id="imageTripper"></canvas> </section>
                 <section>
-                    <span class="marginB">Please select two images</span>
-                    <input type="file" class="mixer" name="img1" accept=".png, .jpg">
-                    <input type="file" class="mixer" name="img2" accept=".png, .jpg">
-                    <button data-use="mixer">Demo</button>
+                    <span class="marginB">Please select an image</span>
+                    <input type="file" class="imageTripper" name="img1" accept=".png, .jpg">
+                    <button data-use="imageTripper">Demo</button>
+                </section>
+            </article>
+        </section>
+
+        <!-- Image noiser -->
+        <section class="bigOnes">
+            <h2>Pixel sort</h2>
+            <span>Takes all the pixels from an image and sorts them out. As simple as that.</span>
+
+            <article>
+                <section> <canvas id="pixelSort"></canvas> </section>
+                <section>
+                    <span class="marginB">Please select an image</span>
+                    <span>Limit:</span>
+                    <input type="range" class="pixelSort" min="1" max="255" step="5">
+                    <input type="file" class="pixelSort" name="img1" accept=".png, .jpg">
+                    <button data-use="pixelSort">Demo</button>
                 </section>
             </article>
         </section>
