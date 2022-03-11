@@ -24,6 +24,7 @@ button {
     color: white;
     transition: transform .2s ease, opacity .2s ease;
     cursor: pointer;
+    width: 10vw;
 }
 button:hover {transform: translateY(-3px);opacity: .7;}
 button.active {transform: translateY(-3px);opacity: .7;}
