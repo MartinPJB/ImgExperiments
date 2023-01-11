@@ -1,3 +1,19 @@
+/* Variables */
+const imageTripperCanvas = document.getElementById("imageTripper");
+const imageTripperCtx = imageTripperCanvas.getContext("2d");
+const pixelSortCanvas = document.getElementById("pixelSort");
+const pixelSortCtx = pixelSortCanvas.getContext("2d");
+const imageInverterCanvas = document.getElementById("imageInverter");
+const imageInverterCtx = imageInverterCanvas.getContext("2d");
+
+imageInverterCanvas.width = 255;
+imageInverterCanvas.height = 255;
+pixelSortCanvas.width = 255;
+pixelSortCanvas.height = 255;
+imageTripperCanvas.width = 255;
+imageTripperCanvas.height = 255;
+
+
 /**
  * Will convert a decimal number to binary.
  * @param {Number} dec Some random number
@@ -5,9 +21,9 @@
  */
  function decimal2bin(dec) {
     let binary = "";
-    while (dec != 0) {
-        binary = dec % 2 + binary;
-        dec = Math.floor(dec / 2);
+    while (dec) {
+        binary = (dec & 1) + binary;
+        dec = dec >> 1;
     }
     return binary;
 }
@@ -55,67 +71,49 @@ function getRGB(data){
 /* IMAGE FUNCTIONS */
 /**
  * Takes the first 4 bits of the rgb component in the image, generates randomly another rgb component and takes its last 4 bits. Generates a trippy image.
+ * Complexity: O(N*log(N))
  * @param {Image} img Image we wanna t ri p
  */
 function imageTripper([img]) {
     if (!img) return console.warn("[function imageTripper] Please define an image.");
 
-    const canvas = document.getElementById("imageTripper");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = 255;
-    canvas.height = 255;
-
     // Cleans the old result
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    imageTripperCtx.clearRect(0, 0, imageTripperCanvas.width, imageTripperCanvas.height);
 
-    // Gets the image data
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data1 = imgData.data;
+    // Draws the image
+    imageTripperCtx.drawImage(img, 0, 0, imageTripperCanvas.width, imageTripperCanvas.height);
+    const imgData = imageTripperCtx.getImageData(0, 0, imageTripperCanvas.width, imageTripperCanvas.height);
+    const data = imgData.data;
 
-    // Creates a new buffer containing the new RGB components we will make
-    const newRGBCompo = new Uint8ClampedArray(canvas.width * canvas.height * 4)
-
-    // Gets the RGB of each images
-    const imgRGB = getRGB(data1);
-
-    for (let i = 0; i < imgRGB.length; i++){
-        let [r, g, b] = Object.values(imgRGB[i]);
-
-        //  Takes the first 4 bits of the RGB component in the first image, takes the last 4 bits of the RGB component in the second image
-        const c = i * 4;
-        newRGBCompo[c] = bin2decimal(decimal2bin(r).substring(4) + decimal2bin(Math.floor(Math.random() * 256)).substring(0, 4));
-        newRGBCompo[c + 1] = bin2decimal(decimal2bin(g).substring(4) + decimal2bin(Math.floor(Math.random() * 256)).substring(0, 4));
-        newRGBCompo[c + 2] = bin2decimal(decimal2bin(b).substring(4) + decimal2bin(Math.floor(Math.random() * 256)).substring(0, 4));
-        newRGBCompo[c + 3] = 255;
+    // Loop through each pixel
+    for (let i = 0; i < data.length; i += 4) {
+        // Takes the first 4 bits of the RGB component in the first image, takes the last 4 bits of the RGB component in the second image
+        const r = bin2decimal(decimal2bin(data[i]).substring(4) + decimal2bin(Math.floor(Math.random() * 256)).substring(0, 4));
+        const g = bin2decimal(decimal2bin(data[i+1]).substring(4) + decimal2bin(Math.floor(Math.random() * 256)).substring(0, 4));
+        const b = bin2decimal(decimal2bin(data[i+2]).substring(4) + decimal2bin(Math.floor(Math.random() * 256)).substring(0, 4));
+        data[i] = r;
+        data[i+1] = g;
+        data[i+2] = b;
     }
 
-    // Shows the new image from the buffer's values
-    const newImageData = ctx.createImageData(canvas.width, canvas.height);
-    newImageData.data.set(newRGBCompo);
-    ctx.putImageData(newImageData, 0, 0);
+    // Put the image data back on the canvas
+    imageTripperCtx.putImageData(imgData, 0, 0);
 }
 
 /**
  * Takes all the pixels from an image and sorts them out. As simple as that.
+ * Complexity: O(NlogN+N)
  * @param {Image} img Image we wanna sort
  */
 function pixelSort([img, limit]){
-    if (!img) return console.warn("[function pixelSort] Please define 1 image.");
-
-    const canvas = document.getElementById("pixelSort");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = 255;
-    canvas.height = 255;
+    if (!img) return console.warn("[function pixelSort] Please define an image.");
 
     // Creates a new buffer containing the new RGB components we will make
-    const newRGBCompo = new Uint8ClampedArray(canvas.width * canvas.height * 4)
+    const newRGBCompo = new Uint8ClampedArray(pixelSortCanvas.width * pixelSortCanvas.height * 4)
 
     // Gets the first image data
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    pixelSortCtx.drawImage(img, 0, 0, pixelSortCanvas.width, pixelSortCanvas.height);
+    const imgData = pixelSortCtx.getImageData(0, 0, pixelSortCanvas.width, pixelSortCanvas.height);
     const data = getRGB(imgData.data);
     
     // Simple sort
@@ -138,15 +136,43 @@ function pixelSort([img, limit]){
     }
 
     // Shows the new image from the buffer's values
-    const newImageData = ctx.createImageData(canvas.width, canvas.height);
+    const newImageData = pixelSortCtx.createImageData(pixelSortCanvas.width, pixelSortCanvas.height);
     newImageData.data.set(newRGBCompo);
-    ctx.putImageData(newImageData, 0, 0);
+    pixelSortCtx.putImageData(newImageData, 0, 0);
+}
+
+/**
+ * Substracts the rgb values of each pixel by 255 to invert the image.
+ * Complexity: O(N)
+ * @param {Image} img Image we wanna invert
+ */
+function imageInverter([img]) {
+    if (!img) return console.warn("[function imageInverter] Please define an image.");
+
+    // Cleans the old result
+    imageInverterCtx.clearRect(0, 0, imageInverterCanvas.width, imageInverterCanvas.height);
+
+    // Gets the image data
+    imageInverterCtx.drawImage(img, 0, 0, imageInverterCanvas.width, imageInverterCanvas.height);
+    const imgData = imageInverterCtx.getImageData(0, 0, imageInverterCanvas.width, imageInverterCanvas.height);
+    const data = imgData.data;
+
+    // Loop through each pixel
+    for (let i = 0; i < data.length; i += 4) {
+        // Subtract r, g, b value by 255
+        data[i] = 255 - data[i];
+        data[i + 1] = 255 - data[i + 1];
+        data[i + 2] = 255 - data[i + 2];
+    }
+    // Put the inverted image data back on the canvas
+    imageInverterCtx.putImageData(imgData, 0, 0);
 }
 
 
 /* EXPORT */
 const allFunctions = {
     imageTripper,
-    pixelSort
+    pixelSort,
+    imageInverter
 }
 export default allFunctions;
