@@ -19,7 +19,7 @@ imageTripperCanvas.height = 255;
  * @param {Number} dec Some random number
  * @returns {String} The binary value of a decimal number
  */
- function decimal2bin(dec) {
+function decimal2bin(dec) {
     let binary = "";
     while (dec) {
         binary = (dec & 1) + binary;
